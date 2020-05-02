@@ -12,7 +12,8 @@ struct InputView: View {
     
     let symbolName:  String
     let placeholder: String
-    @State var inputText = ""
+    
+    @Binding var inputText: String
 
     var body: some View {
         HStack(spacing: 16) {
@@ -30,11 +31,16 @@ struct InputView: View {
                 }
                 TextField(placeholder,
                           text: $inputText,
+                          // フォーカスされたタイミング(画面上で最初に発生したフォーカスは1回、それ以外のフォーカスは2回
+                          // returnが押された時
+                          // に呼ばれる
                           onEditingChanged: { _ in
-                            print("a")
+                              print("onChanged")
                           },
+                          // キーボードのreturnを押されたときのみ呼ばれる。
+                          // それ以外はマジで呼ばれない。
                           onCommit: {
-                            print("b")
+                            print("onCommit")
                           }
                 )
                     .padding(4)
@@ -46,11 +52,11 @@ struct InputView: View {
     }
 }
 
-struct InputView_Previews: PreviewProvider {
-    static var previews: some View {
-        InputView(symbolName: "person.circle",
-                  placeholder: "placeholder")
-            .background(Color.black)
-            .previewLayout(.fixed(width: 414, height: 32))
-    }
-}
+//struct InputView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        InputView(symbolName: "person.circle",
+//                  placeholder: "placeholder")
+//            .background(Color.black)
+//            .previewLayout(.fixed(width: 414, height: 32))
+//    }
+//}
