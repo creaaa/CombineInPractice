@@ -23,21 +23,15 @@ final class WizardSchoolSignupViewModel: ObservableObject {
     }
     
     enum Inputs {
-        case usernameOnCommit(text: String)
-        case passwordOnCommit(text: String)
-        case passwordAgainOnCommit(text: String)
         case tappedButton
     }
+    
     // Inputs
-    private let usernameSubject      = PassthroughSubject<String, Never>()
-    private let passwordSubject      = PassthroughSubject<String, Never>()
-    private let passwordAgainSubject = PassthroughSubject<String, Never>()
-    
-    private let tappedButtonSubject = PassthroughSubject<Void, Never>()
-    
-    @Published var username = ""
-    @Published var password = ""
+    @Published var username      = ""
+    @Published var password      = ""
     @Published var passwordAgain = ""
+    private let tappedButtonSubject = PassthroughSubject<Void, Never>()
+
     // Outputs
     @Published var isButtonDisabled = true
     
@@ -116,12 +110,6 @@ final class WizardSchoolSignupViewModel: ObservableObject {
     
     func apply(inputs: Inputs) {
         switch inputs {
-            case let .usernameOnCommit(text):
-                self.usernameSubject.send(text)
-            case let .passwordOnCommit(text):
-                self.passwordSubject.send(text)
-            case let .passwordAgainOnCommit(text):
-                self.passwordAgainSubject.send(text)
             case .tappedButton:
                 self.tappedButtonSubject.send(())
         }
