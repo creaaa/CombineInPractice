@@ -15,7 +15,7 @@ struct InputView: View {
     @State var inputText = ""
 
     var body: some View {
-        HStack(spacing: 20) {
+        HStack(spacing: 16) {
             Image(systemName: symbolName)
                 .resizable()
                 .frame(width: 32, height: 32)
@@ -37,10 +37,20 @@ struct InputView: View {
                             print("b")
                           }
                 )
+                    .padding(4)
+                    .border(Color.gray, width: 0.5)
                     .foregroundColor(.white)
                     .keyboardType(.asciiCapable)
             }
-            
         }
+    }
+}
+
+struct InputView_Previews: PreviewProvider {
+    static var previews: some View {
+        InputView(symbolName: "person.circle",
+                  placeholder: "placeholder")
+            .background(Color.black)
+            .previewLayout(.fixed(width: 414, height: 32))
     }
 }

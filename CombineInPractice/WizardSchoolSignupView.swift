@@ -50,11 +50,13 @@ struct WizardSchoolSignupView: View {
                 Color.black
                     .edgesIgnoringSafeArea(.all)
                 VStack {
-                    VStack(spacing: 10) {
+                    VStack(spacing: 15) {
                         ForEach(viewModel.inputViewResource) { r in
                             InputView(symbolName: r.symbolName,
                                       placeholder: r.placeHolder)
-                                .padding(.leading, 30)
+                                .padding(.leading, 25)
+                                .padding(.trailing, 25)
+
                         }
                     }
                     
@@ -65,9 +67,10 @@ struct WizardSchoolSignupView: View {
                         label: {
                             Text("Create Account")
                                 .fontWeight(.bold)
+                                .padding(EdgeInsets(top: 15, leading: 100, bottom: 15, trailing: 100))
                                 .background(Color.gray)
                                 .foregroundColor(.white)
-                                .cornerRadius(5)
+                                .cornerRadius(10)
                         }
                     )
                     .offset(y: 30)
