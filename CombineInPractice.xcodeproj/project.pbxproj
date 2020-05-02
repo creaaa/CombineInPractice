@@ -13,6 +13,7 @@
 		30E12B8C245C0D7C00482EC8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30E12B8B245C0D7C00482EC8 /* Assets.xcassets */; };
 		30E12B8F245C0D7C00482EC8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 30E12B8E245C0D7C00482EC8 /* Preview Assets.xcassets */; };
 		30E12B92245C0D7C00482EC8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 30E12B90245C0D7C00482EC8 /* LaunchScreen.storyboard */; };
+		30E12B9A245C294500482EC8 /* NavigationBarModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E12B99245C294500482EC8 /* NavigationBarModifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		30E12B8E245C0D7C00482EC8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		30E12B91245C0D7C00482EC8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		30E12B93245C0D7C00482EC8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		30E12B99245C294500482EC8 /* NavigationBarModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarModifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			children = (
 				30E12B85245C0D7B00482EC8 /* AppDelegate.swift */,
 				30E12B87245C0D7B00482EC8 /* SceneDelegate.swift */,
+				30E12B99245C294500482EC8 /* NavigationBarModifier.swift */,
 				30E12B89245C0D7B00482EC8 /* ContentView.swift */,
 				30E12B8B245C0D7C00482EC8 /* Assets.xcassets */,
 				30E12B90245C0D7C00482EC8 /* LaunchScreen.storyboard */,
@@ -148,6 +151,7 @@
 			files = (
 				30E12B86245C0D7B00482EC8 /* AppDelegate.swift in Sources */,
 				30E12B88245C0D7B00482EC8 /* SceneDelegate.swift in Sources */,
+				30E12B9A245C294500482EC8 /* NavigationBarModifier.swift in Sources */,
 				30E12B8A245C0D7B00482EC8 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
