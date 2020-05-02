@@ -10,61 +10,48 @@ import Combine
 import Foundation
 
 final class WizardSchoolSignupViewModel: ObservableObject {
-    
-    enum TextFieldType {
-        case username, password, passwordAgain
-    }
-    
-    struct InputViewResource: Identifiable {
-        let id = UUID()
-        let symbolName: String
-        let placeHolder: String
-        let textFieldType: TextFieldType
-    }
-    
-    enum Inputs {
-        case tappedButton
-    }
-    
+        
     enum AlertType {
         case signupSuccess
         case signupFailure
     }
-    
+
     // Inputs
-    private let apiService: APIServiceType
-
-    @Published var username        = ""
-    @Published var password        = ""
-    @Published var passwordAgain   = ""
+    enum Inputs {
+        case tappedButton
+    }
     
-    @Published var shouldShowAlert = false
-    @Published var alertType: AlertType?
-    
-    private let tappedButtonSubject = PassthroughSubject<Void, Never>()
-    private let errorSubject        = PassthroughSubject<APIServiceError, Never>()
-    
-
     // Outputs
-    @Published var isButtonDisabled = true
-    @Published var buttonOpacity    = 0.2
-    
+    // username、password、passwordAgainはTextField用、
+    // shouldShowAlert、alertTypeはAlert用に bindingを抽出する必要があるため、
+    // @Published が必要 (@Publishedの projectedValue は Binding)
+    @Published var username         = ""
+    @Published var password         = ""
+    @Published var passwordAgain    = ""
+    @Published var shouldShowAlert  = false
+    @Published var alertType: AlertType?
+    var isButtonDisabled = true
+    var buttonOpacity    = 0.2
     let inputViewResource = [
-        InputViewResource(symbolName:    "person.circle",
+        InputView.Input(symbolName:    "person.circle",
                           placeHolder:   "Wizard name",
                           textFieldType: .username
         ),
-        InputViewResource(symbolName:    "lock.circle",
+        InputView.Input(symbolName:    "lock.circle",
                           placeHolder:   "Password",
                           textFieldType: .password
         ),
-        InputViewResource(symbolName:   "lock.circle",
+        InputView.Input(symbolName:   "lock.circle",
                           placeHolder: "Repeat password",
                           textFieldType: .passwordAgain
         )
     ]
     
-    var cancellables: [AnyCancellable] = []
+    // private
+    private let apiService: APIServiceType
+    private let tappedButtonSubject = PassthroughSubject<Void, Never>()
+    private let errorSubject        = PassthroughSubject<APIServiceError, Never>()
+    private var cancellables: [AnyCancellable] = []
     
     init(service: APIServiceType) {
         self.apiService = service
@@ -85,7 +72,6 @@ final class WizardSchoolSignupViewModel: ObservableObject {
             }
             .eraseToAnyPublisher()
         let validatedPassword: AnyPublisher<String?, Never> = $password
-            // combineLatest、別に2個目のtextfieldに1個も値が流れてない時点でも、1個目のtextfieldの値が変わるたびに値が流れる
             .combineLatest($passwordAgain) { password, passwordAgain in
                 guard
                     password == passwordAgain,
@@ -125,6 +111,18 @@ final class WizardSchoolSignupViewModel: ObservableObject {
                     self.alertType = .signupFailure
                 }
                 self.shouldShowAlert = true
+            }
+            .store(in: &cancellables)
+        errorSubject
+            .sink { error in
+                switch error {
+                case .invalidURL:
+                    print("invalid URL!")
+                case .responseError:
+                    print("response error!")
+                case .parseError(_):
+                    print("parse error!")
+                }
             }
             .store(in: &cancellables)
     }

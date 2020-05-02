@@ -11,7 +11,11 @@ import Combine
 
 struct WizardSchoolSignupView: View {
     
-    @ObservedObject private var viewModel = WizardSchoolSignupViewModel(service: APIService())
+    @ObservedObject private var viewModel: WizardSchoolSignupViewModel
+    
+    init(viewModel: WizardSchoolSignupViewModel) {
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         NavigationView {
@@ -56,14 +60,14 @@ struct WizardSchoolSignupView: View {
         .navigationBarColor(.black)
     }
     
-    private func textType(textFieldType: WizardSchoolSignupViewModel.TextFieldType) -> Binding<String> {
+    private func textType(textFieldType: TextFieldType) -> Binding<String> {
         switch textFieldType {
-        case .username:
-            return $viewModel.username
-        case .password:
-            return $viewModel.password
-        case .passwordAgain:
-            return $viewModel.passwordAgain
+            case .username:
+                return $viewModel.username
+            case .password:
+                return $viewModel.password
+            case .passwordAgain:
+                return $viewModel.passwordAgain
         }
     }
     
@@ -82,6 +86,6 @@ struct WizardSchoolSignupView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        WizardSchoolSignupView()
+        WizardSchoolSignupView(viewModel: WizardSchoolSignupViewModel(service: APIService()))
     }
 }

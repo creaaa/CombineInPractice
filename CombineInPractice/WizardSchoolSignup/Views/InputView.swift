@@ -10,6 +10,13 @@ import SwiftUI
 
 struct InputView: View {
     
+    struct Input: Identifiable {
+        let id = UUID()
+        let symbolName: String
+        let placeHolder: String
+        let textFieldType: TextFieldType
+    }
+    
     let symbolName:  String
     let placeholder: String
     
