@@ -11,7 +11,7 @@ import Combine
 
 struct WizardSchoolSignupView: View {
     
-    @ObservedObject private var viewModel = WizardSchoolSignupViewModel()
+    @ObservedObject private var viewModel = WizardSchoolSignupViewModel(service: APIService())
     
     var body: some View {
         NavigationView {
@@ -45,6 +45,10 @@ struct WizardSchoolSignupView: View {
                     )
                     .disabled(viewModel.isButtonDisabled)
                     .offset(y: 30)
+                    // .alert() は複数チェインできず、最後の.alert()だけが有効
+                    .alert(isPresented: $viewModel.shouldShowAlert) {
+                        alert()
+                    }
                 }
             }
             .navigationBarTitle("Wizard School Signup", displayMode: .inline)
@@ -60,6 +64,16 @@ struct WizardSchoolSignupView: View {
             return $viewModel.password
         case .passwordAgain:
             return $viewModel.passwordAgain
+        }
+    }
+    
+    private func alert() -> Alert {
+        guard let alertType = viewModel.alertType else { fatalError() }
+        switch alertType {
+            case .signupSuccess:
+                return Alert(title: Text("Signup Success!"))
+            case .signupFailure:
+                return Alert(title: Text("Signup Failure!"))
         }
     }
      

@@ -26,11 +26,24 @@ final class WizardSchoolSignupViewModel: ObservableObject {
         case tappedButton
     }
     
+    enum AlertType {
+        case signupSuccess
+        case signupFailure
+    }
+    
     // Inputs
-    @Published var username      = ""
-    @Published var password      = ""
-    @Published var passwordAgain = ""
+    private let apiService: APIServiceType
+
+    @Published var username        = ""
+    @Published var password        = ""
+    @Published var passwordAgain   = ""
+    
+    @Published var shouldShowAlert = false
+    @Published var alertType: AlertType?
+    
     private let tappedButtonSubject = PassthroughSubject<Void, Never>()
+    private let errorSubject        = PassthroughSubject<APIServiceError, Never>()
+    
 
     // Outputs
     @Published var isButtonDisabled = true
@@ -53,7 +66,8 @@ final class WizardSchoolSignupViewModel: ObservableObject {
     
     var cancellables: [AnyCancellable] = []
     
-    init() {
+    init(service: APIServiceType) {
+        self.apiService = service
         bind()
     }
     
@@ -61,6 +75,7 @@ final class WizardSchoolSignupViewModel: ObservableObject {
         let validatedUsername: AnyPublisher<String?, Never> = $username
             .debounce(for: 0.5, scheduler: RunLoop.main)
             .removeDuplicates()
+            .filter { $0 != "" }
             .flatMap { username in
                 return Future { promise in
                     self.usernameAvailable(username) { available in
@@ -69,7 +84,6 @@ final class WizardSchoolSignupViewModel: ObservableObject {
                 }
             }
             .eraseToAnyPublisher()
-        
         let validatedPassword: AnyPublisher<String?, Never> = $password
             // combineLatest、別に2個目のtextfieldに1個も値が流れてない時点でも、1個目のtextfieldの値が変わるたびに値が流れる
             .combineLatest($passwordAgain) { password, passwordAgain in
@@ -82,16 +96,12 @@ final class WizardSchoolSignupViewModel: ObservableObject {
                 return password
             }
             .eraseToAnyPublisher()
-        
-        var validatedCredentials: AnyPublisher<(String, String)?, Never> {
-            validatedUsername
+        let validatedCredentials: AnyPublisher<(String, String)?, Never> = validatedUsername
                 .combineLatest(validatedPassword) { username, password in
                     guard let uname = username, let pwd = password else { return nil }
                     return (uname, pwd)
                 }
                 .eraseToAnyPublisher()
-        }
-        
         validatedCredentials
             .map { credential in
                 credential != nil ? true : false
@@ -106,14 +116,32 @@ final class WizardSchoolSignupViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+        tappedButtonSubject
+            .sink {
+                let no = [0, 1].randomElement()!
+                if no % 2 == 0 {
+                    self.alertType = .signupSuccess
+                } else {
+                    self.alertType = .signupFailure
+                }
+                self.shouldShowAlert = true
+            }
+            .store(in: &cancellables)
     }
     
-    private func usernameAvailable(_ username: String, completion: (Bool) -> Void) {
-        if username != "username" && username != "" {
-            completion(true)
-        } else {
-            completion(false)
-        }
+    private func usernameAvailable(_ username: String, completion: @escaping (Bool) -> Void) {
+        apiService.request(with: UsernameValidationRequest(username: username))
+            .sink(
+                receiveCompletion: { error in
+                    if case let .failure(e) = error {
+                        self.errorSubject.send(e)
+                    }
+                },
+                receiveValue: { result in
+                    completion(result.available)
+                }
+            )
+            .store(in: &cancellables)
     }
     
     func apply(inputs: Inputs) {
@@ -122,4 +150,5 @@ final class WizardSchoolSignupViewModel: ObservableObject {
                 self.tappedButtonSubject.send(())
         }
     }
+    
 }

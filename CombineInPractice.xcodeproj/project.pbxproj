@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		30932B33245D33730001FCE6 /* InputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30932B32245D33730001FCE6 /* InputView.swift */; };
 		30932B36245D70540001FCE6 /* WizardSchoolSignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30932B35245D70540001FCE6 /* WizardSchoolSignupViewModel.swift */; };
+		30932B3B245D846E0001FCE6 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30932B3A245D846E0001FCE6 /* APIService.swift */; };
 		30E12B86245C0D7B00482EC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E12B85245C0D7B00482EC8 /* AppDelegate.swift */; };
 		30E12B88245C0D7B00482EC8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E12B87245C0D7B00482EC8 /* SceneDelegate.swift */; };
 		30E12B8A245C0D7B00482EC8 /* WizardSchoolSignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E12B89245C0D7B00482EC8 /* WizardSchoolSignupView.swift */; };
@@ -21,6 +22,7 @@
 /* Begin PBXFileReference section */
 		30932B32245D33730001FCE6 /* InputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputView.swift; sourceTree = "<group>"; };
 		30932B35245D70540001FCE6 /* WizardSchoolSignupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WizardSchoolSignupViewModel.swift; sourceTree = "<group>"; };
+		30932B3A245D846E0001FCE6 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		30E12B82245C0D7B00482EC8 /* CombineInPractice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CombineInPractice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		30E12B85245C0D7B00482EC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		30E12B87245C0D7B00482EC8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +53,30 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		30932B37245D73960001FCE6 /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				30E12B99245C294500482EC8 /* NavigationBarModifier.swift */,
+			);
+			path = Modifiers;
+			sourceTree = "<group>";
+		};
+		30932B38245D73AC0001FCE6 /* SubViews */ = {
+			isa = PBXGroup;
+			children = (
+				30932B32245D33730001FCE6 /* InputView.swift */,
+			);
+			path = SubViews;
+			sourceTree = "<group>";
+		};
+		30932B39245D74140001FCE6 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				30932B3A245D846E0001FCE6 /* APIService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
 		30E12B79245C0D7B00482EC8 = {
 			isa = PBXGroup;
 			children = (
@@ -70,11 +96,12 @@
 		30E12B84245C0D7B00482EC8 /* CombineInPractice */ = {
 			isa = PBXGroup;
 			children = (
-				30932B34245D70460001FCE6 /* ViewModels */,
 				30E12B85245C0D7B00482EC8 /* AppDelegate.swift */,
 				30E12B87245C0D7B00482EC8 /* SceneDelegate.swift */,
-				30E12B99245C294500482EC8 /* NavigationBarModifier.swift */,
-				30932B32245D33730001FCE6 /* InputView.swift */,
+				30932B37245D73960001FCE6 /* Modifiers */,
+				30932B39245D74140001FCE6 /* Service */,
+				30932B34245D70460001FCE6 /* ViewModels */,
+				30932B38245D73AC0001FCE6 /* SubViews */,
 				30E12B89245C0D7B00482EC8 /* WizardSchoolSignupView.swift */,
 				30E12B8B245C0D7C00482EC8 /* Assets.xcassets */,
 				30E12B90245C0D7C00482EC8 /* LaunchScreen.storyboard */,
@@ -164,6 +191,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				30E12B86245C0D7B00482EC8 /* AppDelegate.swift in Sources */,
+				30932B3B245D846E0001FCE6 /* APIService.swift in Sources */,
 				30932B36245D70540001FCE6 /* WizardSchoolSignupViewModel.swift in Sources */,
 				30E12B88245C0D7B00482EC8 /* SceneDelegate.swift in Sources */,
 				30932B33245D33730001FCE6 /* InputView.swift in Sources */,
