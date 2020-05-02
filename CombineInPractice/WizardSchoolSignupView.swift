@@ -34,6 +34,7 @@ final class WizardSchoolSignupViewModel: ObservableObject {
 
     // Outputs
     @Published var isButtonDisabled = true
+    @Published var buttonOpacity    = 0.2
     
     let inputViewResource = [
         InputViewResource(symbolName:   "person.circle",
@@ -92,16 +93,23 @@ final class WizardSchoolSignupViewModel: ObservableObject {
         }
         
         validatedCredentials
-            .print()
             .map { credential in
-                credential != nil ? false : true
+                credential != nil ? true : false
             }
-            .assign(to: \.isButtonDisabled, on: self)
+            .sink { valid in
+                if valid {
+                    self.isButtonDisabled = false
+                    self.buttonOpacity    = 1.0
+                } else {
+                    self.isButtonDisabled = true
+                    self.buttonOpacity    = 0.2
+                }
+            }
             .store(in: &cancellables)
     }
     
     private func usernameAvailable(_ username: String, completion: (Bool) -> Void) {
-        if username != "username" {
+        if username != "username" && username != "" {
             completion(true)
         } else {
             completion(false)
@@ -147,6 +155,7 @@ struct WizardSchoolSignupView: View {
                                 .background(Color.gray)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
+                                .opacity(viewModel.buttonOpacity)
                         }
                     )
                     .disabled(viewModel.isButtonDisabled)
@@ -168,7 +177,6 @@ struct WizardSchoolSignupView: View {
             return $viewModel.passwordAgain
         }
     }
-    
      
 }
 
