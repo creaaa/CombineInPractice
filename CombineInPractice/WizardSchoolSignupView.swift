@@ -40,45 +40,7 @@ final class WizardSchoolSignupViewModel: ObservableObject {
     }
 }
 
-struct InputView: View {
-    
-    let symbolName:  String
-    let placeholder: String
-    @State var inputText = ""
-
-    var body: some View {
-        HStack(spacing: 20) {
-            Image(systemName: symbolName)
-                .resizable()
-                .frame(width: 32, height: 32)
-                .foregroundColor(.white)
-            
-            ZStack(alignment: .leading) {
-                if inputText.isEmpty {
-                    Text("Placeholder")
-                        .foregroundColor(
-                            Color(UIColor(red: 0.66, green: 0.66, blue: 0.66, alpha: 1)
-                            )
-                        )
-                }
-                TextField(placeholder,
-                          text: $inputText,
-                          onEditingChanged: { _ in
-                            print("s")
-                          },
-                          onCommit: {
-                            print("s")
-                          }
-                )
-                    .foregroundColor(.white)
-                    .keyboardType(.asciiCapable)
-            }
-            
-        }
-    }
-}
-
-struct ContentView: View {
+struct WizardSchoolSignupView: View {
     
     @ObservedObject private var viewModel = WizardSchoolSignupViewModel()
     
@@ -88,24 +50,25 @@ struct ContentView: View {
                 Color.black
                     .edgesIgnoringSafeArea(.all)
                 VStack {
-                    ForEach(viewModel.inputViewResource) { r in
-                        InputView(symbolName: r.symbolName,
-                                  placeholder: r.placeHolder)
-                            .padding(.leading, 30)
-                            .padding(.top, 10)
-                            .padding(.bottom, 2)
+                    VStack(spacing: 10) {
+                        ForEach(viewModel.inputViewResource) { r in
+                            InputView(symbolName: r.symbolName,
+                                      placeholder: r.placeHolder)
+                                .padding(.leading, 30)
+                        }
                     }
+                    
                     Button(
                         action: {
                             self.viewModel.apply(inputs: .tappedButton)
-                    },
+                        },
                         label: {
                             Text("Create Account")
                                 .fontWeight(.bold)
                                 .background(Color.gray)
                                 .foregroundColor(.white)
                                 .cornerRadius(5)
-                    }
+                        }
                     )
                     .offset(y: 30)
                 }
@@ -119,6 +82,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        WizardSchoolSignupView()
     }
 }
