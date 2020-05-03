@@ -15,12 +15,15 @@ struct InputView: View {
         let symbolName: String
         let placeHolder: String
         let textFieldType: TextFieldType
+        let checkmarkType: CheckmarkType
     }
     
     let symbolName:  String
     let placeholder: String
     
     @Binding var inputText: String
+    
+    let checkmarkOpacity: Double
 
     var body: some View {
         HStack(spacing: 16) {
@@ -55,6 +58,15 @@ struct InputView: View {
                     .foregroundColor(.white)
                     .keyboardType(.asciiCapable)
             }
+            
+            Image(systemName: "checkmark.circle")
+                .resizable()
+                .frame(width: 24, height: 24)
+                .foregroundColor(.green)
+                .opacity(checkmarkOpacity)
+            
+            
+            
         }
     }
 }
@@ -62,7 +74,8 @@ struct InputView: View {
 //struct InputView_Previews: PreviewProvider {
 //    static var previews: some View {
 //        InputView(symbolName: "person.circle",
-//                  placeholder: "placeholder")
+//                  placeholder: "placeholder",
+//                  inputText: <#Binding<String>#>)
 //            .background(Color.black)
 //            .previewLayout(.fixed(width: 414, height: 32))
 //    }

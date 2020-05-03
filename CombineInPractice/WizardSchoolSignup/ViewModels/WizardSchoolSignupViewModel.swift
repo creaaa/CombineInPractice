@@ -30,20 +30,27 @@ final class WizardSchoolSignupViewModel: ObservableObject {
     @Published var passwordAgain    = ""
     @Published var shouldShowAlert  = false
     @Published var alertType: AlertType?
+    
+    @Published var usernameCheckmarkOpacity      = 0.0
+    @Published var passwordCheckmarkOpacity      = 0.0
+    @Published var passwordAgainCheckmarkOpacity = 0.0
     var isButtonDisabled = true
     var buttonOpacity    = 0.2
     let inputViewResource = [
         InputView.Input(symbolName:    "person.circle",
                           placeHolder:   "Wizard name",
-                          textFieldType: .username
+                          textFieldType: .username,
+                          checkmarkType: .username
         ),
         InputView.Input(symbolName:    "lock.circle",
                           placeHolder:   "Password",
-                          textFieldType: .password
+                          textFieldType: .password,
+                          checkmarkType: .password
         ),
         InputView.Input(symbolName:   "lock.circle",
                           placeHolder: "Repeat password",
-                          textFieldType: .passwordAgain
+                          textFieldType: .passwordAgain,
+                          checkmarkType: .passwordAgain
         )
     ]
     
@@ -71,6 +78,19 @@ final class WizardSchoolSignupViewModel: ObservableObject {
                 }
             }
             .eraseToAnyPublisher()
+        
+        validatedUsername
+            .map { username in
+                if let _ = username {
+                    return 1.0
+                } else {
+                    return 0.0
+                }
+            }
+            .print()
+            .assign(to: \.usernameCheckmarkOpacity, on: self)
+            .store(in: &cancellables)
+        
         let validatedPassword: AnyPublisher<String?, Never> = $password
             .combineLatest($passwordAgain) { password, passwordAgain in
                 guard
@@ -82,6 +102,17 @@ final class WizardSchoolSignupViewModel: ObservableObject {
                 return password
             }
             .eraseToAnyPublisher()
+        validatedPassword
+            .sink { passwordPair in
+                if let _ = passwordPair {
+                    self.passwordCheckmarkOpacity      = 1.0
+                    self.passwordAgainCheckmarkOpacity = 1.0
+                } else {
+                    self.passwordCheckmarkOpacity      = 0.0
+                    self.passwordAgainCheckmarkOpacity = 0.0
+                }
+            }
+            .store(in: &cancellables)
         let validatedCredentials: AnyPublisher<(String, String)?, Never> = validatedUsername
                 .combineLatest(validatedPassword) { username, password in
                     guard let uname = username, let pwd = password else { return nil }
@@ -125,6 +156,18 @@ final class WizardSchoolSignupViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+        
+//        validatedUsername
+//            .print()
+//            .map { username in
+//                if let _ = username {
+//                    return 1.0
+//                } else {
+//                    return 0.0
+//                }
+//            }
+//        .assign(to: \.usernameCheckmarkOpacity, on: self)
+//        .store(in: &cancellables)
     }
     
     private func usernameAvailable(_ username: String, completion: @escaping (Bool) -> Void) {

@@ -27,7 +27,8 @@ struct WizardSchoolSignupView: View {
                         ForEach(viewModel.inputViewResource) { r in
                             InputView(symbolName: r.symbolName,
                                       placeholder: r.placeHolder,
-                                      inputText: self.textType(textFieldType: r.textFieldType))
+                                      inputText: self.textType(textFieldType: r.textFieldType),
+                                      checkmarkOpacity: self.checkmarkOpacity(checkmarkType: r.checkmarkType))
                                 .padding(.leading, 25)
                                 .padding(.trailing, 25)
                         }
@@ -68,6 +69,17 @@ struct WizardSchoolSignupView: View {
                 return $viewModel.password
             case .passwordAgain:
                 return $viewModel.passwordAgain
+        }
+    }
+    
+    private func checkmarkOpacity(checkmarkType: CheckmarkType) -> Double {
+        switch checkmarkType {
+            case .username:
+                return viewModel.usernameCheckmarkOpacity
+            case .password:
+                return viewModel.passwordCheckmarkOpacity
+            case .passwordAgain:
+                return viewModel.passwordAgainCheckmarkOpacity
         }
     }
     
